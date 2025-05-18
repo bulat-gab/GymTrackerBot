@@ -3,6 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{21705304-2A86-4A70-B23B-8B46B7936DBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTrackerBot.Domain", "src\GymTrackerBot.Domain\GymTrackerBot.Domain.csproj", "{2EDD613C-4751-439B-84B6-BF7FFFE559CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTrackerBot.Infrastructure", "src\GymTrackerBot.Infrastructure\GymTrackerBot.Infrastructure.csproj", "{3990093C-31E3-4217-8CFC-C4AC8614E8C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTrackerBot.Telegram", "src\GymTrackerBot.Telegram\GymTrackerBot.Telegram.csproj", "{A5755CE6-7BEA-45EA-AAF5-61591EC1179F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTrackerBot.App", "src\GymTrackerBot.App\GymTrackerBot.App.csproj", "{CA92BD3B-BD4A-4337-A703-86F96AA43101}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +22,29 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2EDD613C-4751-439B-84B6-BF7FFFE559CA} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
+		{3990093C-31E3-4217-8CFC-C4AC8614E8C1} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
+		{A5755CE6-7BEA-45EA-AAF5-61591EC1179F} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
+		{CA92BD3B-BD4A-4337-A703-86F96AA43101} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EDD613C-4751-439B-84B6-BF7FFFE559CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EDD613C-4751-439B-84B6-BF7FFFE559CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EDD613C-4751-439B-84B6-BF7FFFE559CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EDD613C-4751-439B-84B6-BF7FFFE559CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3990093C-31E3-4217-8CFC-C4AC8614E8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3990093C-31E3-4217-8CFC-C4AC8614E8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3990093C-31E3-4217-8CFC-C4AC8614E8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3990093C-31E3-4217-8CFC-C4AC8614E8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5755CE6-7BEA-45EA-AAF5-61591EC1179F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5755CE6-7BEA-45EA-AAF5-61591EC1179F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5755CE6-7BEA-45EA-AAF5-61591EC1179F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5755CE6-7BEA-45EA-AAF5-61591EC1179F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA92BD3B-BD4A-4337-A703-86F96AA43101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA92BD3B-BD4A-4337-A703-86F96AA43101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA92BD3B-BD4A-4337-A703-86F96AA43101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA92BD3B-BD4A-4337-A703-86F96AA43101}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

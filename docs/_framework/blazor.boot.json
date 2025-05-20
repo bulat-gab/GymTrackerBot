@@ -1,9 +1,9 @@
 {
   "mainAssemblyName": "GymTrackerBot.PWA",
   "resources": {
-    "hash": "sha256-5HvB526eWBvE1/8cuFDGWh6sq/KvvazQcw0I1zATDvE=",
+    "hash": "sha256-sr42c6L4E0TH3fHtugkdzeR0PxWtgDKXDZ8niM1c7cQ=",
     "fingerprinting": {
-      "GymTrackerBot.PWA.ec8tcfg77y.wasm": "GymTrackerBot.PWA.wasm",
+      "GymTrackerBot.PWA.qq73bz22k4.wasm": "GymTrackerBot.PWA.wasm",
       "Microsoft.AspNetCore.Components.g2uf8wsg0m.wasm": "Microsoft.AspNetCore.Components.wasm",
       "Microsoft.AspNetCore.Components.Web.5fnpqqr84r.wasm": "Microsoft.AspNetCore.Components.Web.wasm",
       "Microsoft.AspNetCore.Components.WebAssembly.0prlth0hc4.wasm": "Microsoft.AspNetCore.Components.WebAssembly.wasm",
@@ -64,7 +64,7 @@
       "System.Runtime.InteropServices.JavaScript.f4ln4hfftw.wasm": "sha256-r+LQmgoVdHgFKWJvUNAR7HQZAtSw+xvBIQ6siSPsBNM="
     },
     "assembly": {
-      "GymTrackerBot.PWA.ec8tcfg77y.wasm": "sha256-gkgUReN32TauY1ovRJd+wh+EW5G6DIx4jBNjpBnQVZY=",
+      "GymTrackerBot.PWA.qq73bz22k4.wasm": "sha256-8kCvUKX8TxlvQpeO3viqInMxKJgIwS4ONgb8xZFZlkE=",
       "Microsoft.AspNetCore.Components.g2uf8wsg0m.wasm": "sha256-CHLBdZ8lmGjukXC04ARQkEazSu2q0ffGzI959NNh0+4=",
       "Microsoft.AspNetCore.Components.Web.5fnpqqr84r.wasm": "sha256-0fT5DLMa1voamFmX5/f/aY8oct7a5CLEOHu2Tdn6oCA=",
       "Microsoft.AspNetCore.Components.WebAssembly.0prlth0hc4.wasm": "sha256-jB/Gf1i7eXuQqAzqY/ZONe+hrW3x94pYZlL+G0Cv7Co=",

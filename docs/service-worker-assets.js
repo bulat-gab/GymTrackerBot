@@ -1,13 +1,13 @@
 self.assetsManifest = {
-  "version": "+ZYED6oP",
+  "version": "CuJ7S9Z8",
   "assets": [
     {
       "hash": "sha256-4SHJsX5n1FQYFn3rCFWnRlWClXufawp/UO2KFJa7izY=",
       "url": "GymTrackerBot.PWA.styles.css"
     },
     {
-      "hash": "sha256-gkgUReN32TauY1ovRJd+wh+EW5G6DIx4jBNjpBnQVZY=",
-      "url": "_framework/GymTrackerBot.PWA.ec8tcfg77y.wasm"
+      "hash": "sha256-8kCvUKX8TxlvQpeO3viqInMxKJgIwS4ONgb8xZFZlkE=",
+      "url": "_framework/GymTrackerBot.PWA.qq73bz22k4.wasm"
     },
     {
       "hash": "sha256-0fT5DLMa1voamFmX5/f/aY8oct7a5CLEOHu2Tdn6oCA=",
@@ -142,7 +142,7 @@ self.assetsManifest = {
       "url": "_framework/System.Text.RegularExpressions.0e9rlv7vxy.wasm"
     },
     {
-      "hash": "sha256-zZ+G3sooiEGL66MkZXcXg1f7HhZOOyYwTAOQJIJVL5o=",
+      "hash": "sha256-d0v5MU70Ab4rYTA/zUp3L4VjstMFolsXenIlWI8BLSM=",
       "url": "_framework/blazor.boot.json"
     },
     {
@@ -194,7 +194,7 @@ self.assetsManifest = {
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-l0Bev9InO8yHJn/S7WVGm1z+dNrFKoL0shs6KqB5YMQ=",
+      "hash": "sha256-dIc1MlhtpbleynKc45APz88rKfZt1G0KJv81/ipvP9c=",
       "url": "index.html"
     },
     {

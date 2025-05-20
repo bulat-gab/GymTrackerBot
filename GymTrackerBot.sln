@@ -15,6 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTrackerBot.Telegram", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTrackerBot.App", "src\GymTrackerBot.App\GymTrackerBot.App.csproj", "{CA92BD3B-BD4A-4337-A703-86F96AA43101}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F273AD80-7BA5-42D7-9A3D-842333D62AA0}"
+	ProjectSection(SolutionItems) = preProject
+		compose.dev.yaml = compose.dev.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTrackerBot.PWA", "src\GymTrackerBot.PWA\GymTrackerBot.PWA.csproj", "{F440CCD4-06E7-470F-B44A-DA8759170CEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +35,7 @@ Global
 		{3990093C-31E3-4217-8CFC-C4AC8614E8C1} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
 		{A5755CE6-7BEA-45EA-AAF5-61591EC1179F} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
 		{CA92BD3B-BD4A-4337-A703-86F96AA43101} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
+		{F440CCD4-06E7-470F-B44A-DA8759170CEE} = {C9A5ABED-FCAA-420D-BF82-FA77FABCCDD3}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2EDD613C-4751-439B-84B6-BF7FFFE559CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -46,5 +54,9 @@ Global
 		{CA92BD3B-BD4A-4337-A703-86F96AA43101}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA92BD3B-BD4A-4337-A703-86F96AA43101}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA92BD3B-BD4A-4337-A703-86F96AA43101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F440CCD4-06E7-470F-B44A-DA8759170CEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F440CCD4-06E7-470F-B44A-DA8759170CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F440CCD4-06E7-470F-B44A-DA8759170CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F440CCD4-06E7-470F-B44A-DA8759170CEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

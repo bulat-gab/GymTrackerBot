@@ -8,4 +8,8 @@
         <IsPackable>false</IsPackable>
         <OutputType>Library</OutputType>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Versioning\" />
+    </ItemGroup>
 </Project>

@@ -16,4 +16,9 @@
         <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\GymTrackerBot.Domain\GymTrackerBot.Domain.csproj" />
+      <ProjectReference Include="..\GymTrackerBot.Infrastructure\GymTrackerBot.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

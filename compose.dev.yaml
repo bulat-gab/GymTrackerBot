@@ -1,0 +1,28 @@
+﻿services:
+  gymtrackerbot.app:
+    image: gymtrackerbot.app
+    container_name: gymtrackerbot.app
+    build:
+      context: .
+      dockerfile: src/GymTrackerBot.App/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      - gymtrackerbot.postgres
+
+  gymtrackerbot.postgres:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: gym
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    driver: local

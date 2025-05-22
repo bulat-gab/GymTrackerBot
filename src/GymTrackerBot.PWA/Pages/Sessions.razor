@@ -40,7 +40,8 @@ else
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Duration</th>
-                <th>Notes</th>
+                <th>Types</th>
+                <th class="d-none d-sm-table-cell">Notes</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -61,21 +62,24 @@ else
                             <span class="badge bg-success">Active</span>
                         }
                     </td>
-                    <td>
+                    <td>@GetSessionTypeDisplay(session.SessionType)</td>
+                    <td class="d-none d-sm-table-cell">
                         @if (!string.IsNullOrEmpty(session.Notes))
                         {
                             <span class="text-truncate d-inline-block" style="max-width: 150px;" title="@session.Notes">
-                                    @session.Notes
-                                </span>
+                                @session.Notes
+                            </span>
                         }
                     </td>
-                    <td>
+
+
+                    <td class="d-flex flex-wrap justify-content-center gap-2">
                         <button class="btn btn-info btn-sm" @onclick="() => ViewSession(session.Id)">View</button>
                         @if (!session.EndTime.HasValue)
                         {
-                            <button class="btn btn-success btn-sm ms-1" @onclick="() => OpenFinishSessionDialog(session.Id)">Finish</button>
+                            <button class="btn btn-success btn-sm" @onclick="() => OpenFinishSessionDialog(session.Id)">Finish</button>
                         }
-                        <button class="btn btn-danger btn-sm ms-1" @onclick="() => DeleteSession(session.Id)">Delete</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => DeleteSession(session.Id)">Delete</button>
                     </td>
                 </tr>
             }
@@ -99,6 +103,23 @@ else
                         <label for="sessionNotes">Notes (optional):</label>
                         <textarea id="sessionNotes" class="form-control" @bind="newSessionNotes" rows="3"
                                   placeholder="What are you planning to work on today?"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Session Type(s):</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var type in Enum.GetValues<GymSessionType>())
+                            {
+                                if (type == GymSessionType.None) continue;
+
+                                <label class="form-check-label me-3">
+                                    <input class="form-check-input me-1"
+                                           type="checkbox"
+                                           checked="@newSessionTypes.HasFlag(type)"
+                                           @onchange="e => ToggleSessionType(type, e.Value is true)" />
+                                    @type.ToString()
+                                </label>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -144,6 +165,7 @@ else
     private string? finishSessionNotes;
     private int selectedSessionId;
     private bool hasActiveSession = false;
+    private GymSessionType newSessionTypes = GymSessionType.None;
 
     protected override async Task OnInitializedAsync()
     {
@@ -153,18 +175,16 @@ else
     private async Task LoadSessions()
     {
         sessions = await GymService.GetSessionsAsync();
-
-        // Check if there's any active session
         hasActiveSession = sessions?.Any(s => !s.EndTime.HasValue) ?? false;
     }
 
-    // New Session Dialog methods
     private void OpenNewSessionDialog()
     {
         if (hasActiveSession)
             return;
 
         newSessionNotes = null;
+        newSessionTypes = GymSessionType.None;
         showNewSessionDialog = true;
     }
 
@@ -175,7 +195,6 @@ else
 
     private async Task CreateNewSession()
     {
-        // Double-check we don't have active sessions
         if (hasActiveSession)
         {
             CloseNewSessionDialog();
@@ -185,7 +204,8 @@ else
         var newSession = new GymSession
         {
             StartTime = DateTime.Now,
-            Notes = newSessionNotes
+            Notes = newSessionNotes,
+            SessionType = newSessionTypes
         };
 
         await GymService.CreateSessionAsync(newSession);
@@ -193,7 +213,6 @@ else
         await LoadSessions();
     }
 
-    // Finish Session Dialog methods
     private void OpenFinishSessionDialog(int id)
     {
         selectedSessionId = id;
@@ -224,5 +243,22 @@ else
         {
             await LoadSessions();
         }
+    }
+
+    private string GetSessionTypeDisplay(GymSessionType types)
+    {
+        if (types == GymSessionType.None) return "-";
+        return string.Join(", ",
+            Enum.GetValues<GymSessionType>()
+                .Where(t => t != GymSessionType.None && types.HasFlag(t))
+                .Select(t => t.ToString()));
+    }
+
+    private void ToggleSessionType(GymSessionType type, bool isChecked)
+    {
+        if (isChecked)
+            newSessionTypes |= type;
+        else
+            newSessionTypes &= ~type;
     }
 }

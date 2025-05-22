@@ -42,6 +42,24 @@ else if (isEditing)
                 <textarea class="form-control" rows="5" @bind="editSession.Notes" placeholder="Enter session notes here..."></textarea>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Session Type(s)</label>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var type in Enum.GetValues<GymSessionType>())
+                    {
+                        if (type == GymSessionType.None) continue;
+
+                        <label class="form-check-label me-3">
+                            <input class="form-check-input me-1"
+                                   type="checkbox"
+                                   checked="@editSession!.SessionType.HasFlag(type)"
+                                   @onchange="e => ToggleEditSessionType(type, (bool)e.Value!)" />
+                            @type.ToString()
+                        </label>
+                    }
+                </div>
+            </div>
+
             <div class="d-flex justify-content-end gap-2">
                 <button class="btn btn-outline-secondary" @onclick="CancelEdit">Cancel</button>
                 <button class="btn btn-primary" @onclick="SaveSession">Save Changes</button>
@@ -103,6 +121,9 @@ else
                                 <span title="Current duration (ongoing)">@duration.ToString(@"hh\:mm\:ss")</span>
                             }
                         </dd>
+
+                        <dt class="col-sm-4">Types:</dt>
+                        <dd class="col-sm-8">@GetSessionTypeDisplay(session.SessionType)</dd>
                     </dl>
                 </div>
                 <div class="col-md-6">
@@ -221,7 +242,6 @@ else
     private async Task LoadSession()
     {
         session = await GymService.GetSessionAsync(Id);
-
         if (session == null)
         {
             NavigationManager.NavigateTo("sessions");
@@ -230,10 +250,9 @@ else
 
     private void GoBack()
     {
-        NavigationManager.NavigateTo("sessions");
+        NavigationManager.NavigateTo("/sessions");
     }
 
-    // Edit functionality
     private void StartEdit()
     {
         editSession = new GymSession
@@ -241,7 +260,8 @@ else
             Id = session!.Id,
             StartTime = session.StartTime,
             EndTime = session.EndTime,
-            Notes = session.Notes
+            Notes = session.Notes,
+            SessionType = session.SessionType
         };
         isEditing = true;
     }
@@ -262,7 +282,6 @@ else
         }
     }
 
-    // Finish Session Dialog
     private void OpenFinishDialog()
     {
         finishNotes = null;
@@ -281,7 +300,6 @@ else
         await LoadSession();
     }
 
-    // Delete Session
     private void DeleteSession()
     {
         showDeleteConfirmation = true;
@@ -298,5 +316,24 @@ else
         {
             NavigationManager.NavigateTo("/sessions");
         }
+    }
+
+    private string GetSessionTypeDisplay(GymSessionType types)
+    {
+        if (types == GymSessionType.None) return "-";
+        return string.Join(", ",
+            Enum.GetValues<GymSessionType>()
+                .Where(t => t != GymSessionType.None && types.HasFlag(t))
+                .Select(t => t.ToString()));
+    }
+
+    private void ToggleEditSessionType(GymSessionType type, bool isChecked)
+    {
+        if (editSession == null) return;
+
+        if (isChecked)
+            editSession.SessionType |= type;
+        else
+            editSession.SessionType &= ~type;
     }
 }

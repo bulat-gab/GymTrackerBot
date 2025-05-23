@@ -24,7 +24,7 @@ public class LocalStorageGymSessionService : IGymServiceStandalone
             return new List<GymSession>();
 
         var sessions = JsonSerializer.Deserialize<List<GymSession>>(json) ?? [];
-        return sessions.OrderBy(x => x.EndTime).ToList();
+        return sessions.OrderByDescending(x => x.EndTime).ToList();
     }
 
     private async Task SaveAllSessionsToStorageAsync(List<GymSession> sessions)

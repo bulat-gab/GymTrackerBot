@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject NavigationManager NavigationManager
+
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">House of Gains</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -10,8 +13,9 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="@GetBasePath()" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+
             </NavLink>
         </div>
         <div class="nav-item px-3">
@@ -24,9 +28,11 @@
 
 @code {
     private bool collapseNavMenu = true;
-
+    
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    private object GetBasePath() => NavigationManager.BaseUri;
+    
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;

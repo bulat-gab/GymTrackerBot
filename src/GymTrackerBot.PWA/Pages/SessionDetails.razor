@@ -1,4 +1,4 @@
-﻿@page "/session/{Id:int}"
+﻿@page "/sessions/{Id:int}"
 @using GymTrackerBot.Domain.Models
 @using GymTrackerBot.Domain.Interfaces
 @inject IGymServiceStandalone GymService
@@ -250,7 +250,7 @@ else
 
     private void GoBack()
     {
-        NavigationManager.NavigateTo("/sessions");
+        NavigationManager.NavigateTo("sessions");
     }
 
     private void StartEdit()

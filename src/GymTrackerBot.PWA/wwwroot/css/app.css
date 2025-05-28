@@ -122,3 +122,20 @@ code {
         display: inline-block;
     }
 }
+
+/* Blur the content that's outside the modal */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    backdrop-filter: blur(8px); /* Add blur effect */
+    z-index: 1040; /* Ensure it's behind the modal */
+}
+
+/* Optional: Ensure the modal stays on top */
+.modal.show {
+    z-index: 1050;
+}

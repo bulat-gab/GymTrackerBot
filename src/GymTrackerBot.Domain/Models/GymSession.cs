@@ -7,13 +7,12 @@ public class GymSession : IVersionedModel
     public static readonly int CurrentVersion = 0;
 
     public int Id { get; set; }
-    public string? Username { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime? EndTime { get; set; }
     public string? Notes { get; set; }
     public GymSessionType SessionType { get; set; } = GymSessionType.None;
 
-    // public List<Exercise> Exercises { get; set; } = new();
+    public List<GymExercise> Exercises { get; set; } = new();
     
     public bool IsFinished() => EndTime.HasValue;
         
@@ -21,10 +20,7 @@ public class GymSession : IVersionedModel
         
     public DateTime GetDateForCalendar() => StartTime.Date;
 
-    public int SchemaVersion { get; } = CurrentVersion;
+    public int SchemaVersion => CurrentVersion;
 
-    public IVersionedModel UpgradeToLatest()
-    {
-        throw new NotImplementedException();
-    }
+    public IVersionedModel UpgradeToLatest() => throw new NotImplementedException();
 }

@@ -1,0 +1,42 @@
+﻿[
+  {
+    "id": "barbell_curl",
+    "name": "Barbell Curl",
+    "sessionType": 512,
+    "equipment": "Barbell",
+    "defaultSets": 3,
+    "defaultReps": 10
+  },
+  {
+    "id": "hammer_curl",
+    "name": "Hammer Curl",
+    "sessionType": 512,
+    "equipment": "Dumbbells",
+    "defaultSets": 3,
+    "defaultReps": 12
+  },
+  {
+    "id": "tricep_pushdown",
+    "name": "Tricep Pushdown",
+    "sessionType": 512,
+    "equipment": "Cable Machine",
+    "defaultSets": 3,
+    "defaultReps": 12
+  },
+  {
+    "id": "skullcrushers",
+    "name": "Skullcrushers",
+    "sessionType": 512,
+    "equipment": "EZ Bar",
+    "defaultSets": 3,
+    "defaultReps": 10
+  },
+  {
+    "id": "wrist_curls",
+    "name": "Wrist Curls",
+    "sessionType": 512,
+    "equipment": "Barbell",
+    "defaultSets": 2,
+    "defaultReps": 15
+  }
+]

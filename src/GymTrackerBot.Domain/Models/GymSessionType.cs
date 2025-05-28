@@ -12,5 +12,6 @@ public enum GymSessionType
     CrossFit = 1 << 5,
     Cardio = 1 << 6,
     FullBody = 1 << 7,
-    Mobility = 1 << 8
+    Mobility = 1 << 8,
+    Arms = 1 << 9,
 }

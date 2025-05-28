@@ -21,6 +21,23 @@
             <button class="btn btn-outline-danger" @onclick="DiscardActiveSession">Discard</button>
         </div>
     </div>
+    
+    @if (filteredExercises.Any())
+    {
+        <div class="mt-3">
+            <h5>Suggested Exercises</h5>
+            <ul class="list-group">
+                @foreach (var ex in filteredExercises)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @ex.Name
+                        <button class="btn btn-sm btn-outline-primary" @onclick="@(() => AddExerciseToSession(ex))">Add</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
 
 }
 else
@@ -105,16 +122,28 @@ else
     private TimeSpan elapsed;
     private Timer? stopwatchTimer;
 
+    
+    [Inject] private HttpClient Http { get; set; }
+    private List<ExerciseTemplate> allExercises = new();
+    private List<ExerciseTemplate> filteredExercises = new();
+    
     protected override async Task OnInitializedAsync()
     {
         var sessions = await GymService.GetSessionsAsync();
         activeSession = sessions.FirstOrDefault(s => !s.EndTime.HasValue);
 
+        allExercises = await Http.GetFromJsonAsync<List<ExerciseTemplate>>("data/exercises.json") ?? new();
+
         if (activeSession != null)
         {
             StartStopwatch();
+
+            filteredExercises = allExercises
+                .Where(e => activeSession.SessionType.HasFlag(e.SessionType))
+                .ToList();
         }
     }
+
 
     private async Task CreateNewSession()
     {
@@ -130,6 +159,9 @@ else
 
         activeSession = newSession;
         StartStopwatch();
+        filteredExercises = allExercises
+            .Where(e => newSession.SessionType.HasFlag(e.SessionType))
+            .ToList();
     }
 
     private void StartStopwatch()
@@ -210,4 +242,32 @@ else
                 .Where(t => t != GymSessionType.None && types.HasFlag(t))
                 .Select(t => t.ToString()));
     }
+    
+    private async Task AddExerciseToSession(ExerciseTemplate template)
+    {
+        if (activeSession != null)
+        {
+            var exercise = new GymExercise
+            {
+                Name = template.Name,
+                Sets = template.DefaultSets,
+                Reps = template.DefaultReps
+            };
+
+            activeSession.Exercises.Add(exercise);
+            await GymService.UpdateSessionAsync(activeSession); // Ensure this method exists
+            StateHasChanged();
+        }
+    }
+    
+    private void FilterExercises()
+    {
+        if (activeSession != null)
+        {
+            filteredExercises = allExercises
+                .Where(e => activeSession.SessionType.HasFlag(e.SessionType))
+                .ToList();
+        }
+    }
+
 }

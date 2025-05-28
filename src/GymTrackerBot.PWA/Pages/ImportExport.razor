@@ -1,0 +1,23 @@
+﻿@page "/importexport"
+@using System.Text.Json
+@using GymTrackerBot.Domain.Interfaces
+
+@inject IJSRuntime JSRuntime
+@inject IGymServiceStandalone GymService
+
+<h3>ImportExport</h3>
+
+<button class="btn btn-primary" @onclick="ExportSessions">Export sessions to a file</button>
+
+
+@code {
+
+    private async Task ExportSessions()
+    {
+        var sessions = await GymService.GetSessionsAsync();
+        var json = JsonSerializer.Serialize(sessions);
+        
+        await JSRuntime.InvokeVoidAsync("downloadFile", "sessions.json", "application/json", json);
+
+    }
+}

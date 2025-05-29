@@ -110,12 +110,12 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadSessions();
+        await LoadActiveSessions();
     }
 
-    private async Task LoadSessions()
+    private async Task LoadActiveSessions()
     {
-        sessions = await GymService.GetSessionsAsync();
+        sessions = (await GymService.GetSessionsAsync()).Where(x => x.IsFinished()).ToList();
     }
 
     private void ViewSession(int id)
@@ -127,7 +127,7 @@ else
     {
         if (await GymService.DeleteSessionAsync(id))
         {
-            await LoadSessions();
+            await LoadActiveSessions();
         }
     }
     
@@ -152,7 +152,7 @@ else
         {
             if (await GymService.DeleteSessionAsync(sessionIdToDelete.Value))
             {
-                await LoadSessions();
+                await LoadActiveSessions();
             }
         }
         CloseConfirmDialog(); // Close the dialog when finished

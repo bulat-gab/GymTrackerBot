@@ -1,0 +1,37 @@
+﻿[
+  {
+    "Id": "barbell_overhead_press",
+    "Name": "Barbell Overhead Press",
+    "SessionType": 8,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "seated_db_press",
+    "Name": "Seated DB Press",
+    "SessionType": 8,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "lateral_raise",
+    "Name": "Lateral Raise",
+    "SessionType": 8,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "front_raise",
+    "Name": "Front Raise",
+    "SessionType": 8,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "rear_delt_fly",
+    "Name": "Rear Delt Fly",
+    "SessionType": 8,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  }
+]

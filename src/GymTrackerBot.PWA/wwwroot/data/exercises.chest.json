@@ -1,0 +1,51 @@
+﻿[
+  {
+    "Id": "barbell_bench_press",
+    "Name": "Barbell Bench Press",
+    "SessionType": 2,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "dumbbell_bench_press",
+    "Name": "Dumbbell Bench Press",
+    "SessionType": 2,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "barbell_incline_bench_press",
+    "Name": "Incline Barbell Press",
+    "SessionType": 2,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "dumbbell_incline_press",
+    "Name": "Incline Dumbbell Press",
+    "SessionType": 2,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "chest_fly",
+    "Name": "Chest Fly",
+    "SessionType": 2,
+    "DefaultSets": 4,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "push_ups",
+    "Name": "Push Ups",
+    "SessionType": 2,
+    "DefaultSets": 3,
+    "DefaultReps": 15
+  },
+  {
+    "Id": "dips",
+    "Name": "Dips",
+    "SessionType": 2,
+    "DefaultSets": 3,
+    "DefaultReps": 15
+  }
+]

@@ -1,0 +1,44 @@
+﻿[
+  {
+    "Id": "pull_ups",
+    "Name": "Pull Ups",
+    "SessionType": 4,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "lat_pulldown",
+    "Name": "Lat Pulldown",
+    "SessionType": 4,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "bent_over_row",
+    "Name": "Bent Over Row",
+    "SessionType": 4,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "deadlift",
+    "Name": "Deadlift",
+    "SessionType": 4,
+    "DefaultSets": 4,
+    "DefaultReps": 6
+  },
+  {
+    "Id": "seated_cable_row",
+    "Name": "Seated Cable Row",
+    "SessionType": 4,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "chin_ups",
+    "Name": "Chin Ups",
+    "SessionType": 4,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  }
+]

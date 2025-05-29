@@ -1,0 +1,37 @@
+﻿[
+  {
+    "Id": "bicep_curl",
+    "Name": "Bicep Curl",
+    "SessionType": 512,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "tricep_pushdown",
+    "Name": "Tricep Pushdown",
+    "SessionType": 512,
+    "DefaultSets": 3,
+    "DefaultReps": 15
+  },
+  {
+    "Id": "hammer_curl",
+    "Name": "Hammer Curl",
+    "SessionType": 512,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "overhead_tricep_extension",
+    "Name": "Overhead Tricep Extension",
+    "SessionType": 512,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "french_bench_press",
+    "Name": "French Bench Press",
+    "SessionType": 512,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  }
+]

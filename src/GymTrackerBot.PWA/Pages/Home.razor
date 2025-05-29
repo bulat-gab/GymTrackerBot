@@ -1,5 +1,7 @@
 ﻿@page "/"
 @inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@using System.Text.Json
 @using GymTrackerBot.Domain.Interfaces
 @using GymTrackerBot.Domain.Models
 @inject IGymServiceStandalone GymService
@@ -21,24 +23,30 @@
             <button class="btn btn-outline-danger" @onclick="DiscardActiveSession">Discard</button>
         </div>
     </div>
-    
-    @if (filteredExercises.Any())
+
+    @if (activeSession.Exercises.Any())
     {
-        <div class="mt-3">
-            <h5>Suggested Exercises</h5>
+        <div class="mt-4">
+            <h5>Exercises</h5>
             <ul class="list-group">
-                @foreach (var ex in filteredExercises)
+                @foreach (var ex in activeSession.Exercises)
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @ex.Name
-                        <button class="btn btn-sm btn-outline-primary" @onclick="@(() => AddExerciseToSession(ex))">Add</button>
+                        <div>
+                            <strong>@ex.Name</strong><br />
+                            <small>@ex.Sets sets × @ex.Reps reps</small>
+                        </div>
                     </li>
                 }
             </ul>
         </div>
     }
+    else
+    {
+        <p class="mt-3 text-muted">No exercises added yet.</p>
+    }
 
-
+    <button class="btn btn-primary mt-3" @onclick="OpenAddExerciseDialog">Add Exercise</button>
 }
 else
 {
@@ -47,7 +55,6 @@ else
     </div>
 }
 
-<!-- New Session Modal -->
 @if (showNewSessionDialog)
 {
     <div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);" tabindex="-1">
@@ -58,14 +65,9 @@ else
                     <button type="button" class="btn-close" @onclick="CloseNewSessionDialog"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="sessionNotes">Notes (optional):</label>
-                        <textarea id="sessionNotes" class="form-control" @bind="newSessionNotes" rows="3"
-                                  placeholder="What are you planning to work on today?"></textarea>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="sessionType">Session Type:</label>
-                        <select id="sessionType" class="form-select" @bind="@selectedSessionType">
+                    <div class="mb-3">
+                        <label for="sessionType" class="form-label">Session Type</label>
+                        <select id="sessionType" class="form-select" @bind="selectedSessionType">
                             @foreach (var type in Enum.GetValues<GymSessionType>())
                             {
                                 if (type != GymSessionType.None)
@@ -75,20 +77,86 @@ else
                             }
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="sessionNotes" class="form-label">Notes (optional)</label>
+                        <textarea id="sessionNotes" class="form-control" @bind="newSessionNotes" rows="3"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @onclick="CloseNewSessionDialog">Cancel</button>
-                    <button type="button" class="btn btn-primary" @onclick="CreateNewSession">Start Session</button>
+                    <button class="btn btn-secondary" @onclick="CloseNewSessionDialog">Cancel</button>
+                    <button class="btn btn-primary" @onclick="CreateNewSession">Start Session</button>
                 </div>
             </div>
         </div>
     </div>
 }
 
-<!-- Finish Session Modal -->
+@if (showAddExerciseDialog)
+{
+    <div class="modal fade show" style="display:block; background-color: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Exercise</h5>
+                    <button type="button" class="btn-close" @onclick="CloseAddExerciseDialog"></button>
+                </div>
+                <div class="modal-body">
+                    @if (allExercises.Any())
+                    {
+                        var matching = allExercises
+                            .Where(e => activeSession!.SessionType.HasFlag(e.SessionType))
+                            .OrderBy(e => e.Name)
+                            .ToList();
+
+                        var other = allExercises
+                            .Where(e => !activeSession!.SessionType.HasFlag(e.SessionType))
+                            .OrderBy(e => e.Name)
+                            .ToList();
+
+                        if (matching.Any())
+                        {
+                            <h6 class="text-success">Matching Exercises</h6>
+                            <ul class="list-group mb-3">
+                                @foreach (var exercise in matching)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        @exercise.Name
+                                        <button class="btn btn-sm btn-outline-primary" @onclick="() => AddExerciseToSession(exercise)">Add</button>
+                                    </li>
+                                }
+                            </ul>
+                        }
+
+                        if (other.Any())
+                        {
+                            <h6 class="text-muted">Other Exercises</h6>
+                            <ul class="list-group">
+                                @foreach (var exercise in other)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        @exercise.Name
+                                        <button class="btn btn-sm btn-outline-primary" @onclick="() => AddExerciseToSession(exercise)">Add</button>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <p>No exercises available.</p>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CloseAddExerciseDialog">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @if (showFinishSessionDialog)
 {
-    <div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);" tabindex="-1">
+    <div class="modal fade show" style="display:block; background-color: rgba(0,0,0,0.5);" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -96,73 +164,78 @@ else
                     <button type="button" class="btn-close" @onclick="CloseFinishSessionDialog"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group mb-3">
-                        <label for="finishNotes">Notes (optional):</label>
+                    <div class="mb-3">
+                        <label for="finishNotes" class="form-label">Notes (optional)</label>
                         <textarea id="finishNotes" class="form-control" @bind="finishSessionNotes" rows="3"
                                   placeholder="How was your workout?"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @onclick="CloseFinishSessionDialog">Cancel</button>
-                    <button type="button" class="btn btn-success" @onclick="FinishSession">Finish Session</button>
+                    <button class="btn btn-secondary" @onclick="CloseFinishSessionDialog">Cancel</button>
+                    <button class="btn btn-success" @onclick="FinishSession">Finish Session</button>
                 </div>
             </div>
         </div>
     </div>
 }
 
+
 @code {
     private GymSession? activeSession;
-    private bool showNewSessionDialog = false;
-    private bool showFinishSessionDialog = false;
-
-    private string? newSessionNotes;
-    private string? finishSessionNotes;
-    private GymSessionType selectedSessionType;
+    private List<GymExerciseTemplate> allExercises = new();
     private TimeSpan elapsed;
     private Timer? stopwatchTimer;
 
-    
-    [Inject] private HttpClient Http { get; set; }
-    private List<ExerciseTemplate> allExercises = new();
-    private List<ExerciseTemplate> filteredExercises = new();
-    
+    private bool showAddExerciseDialog = false;
+    private bool showNewSessionDialog = false;
+    private bool showFinishSessionDialog = false;
+    private int selectedSessionId;
+    private string? finishSessionNotes;
+
+    private string? newSessionNotes;
+    private GymSessionType selectedSessionType;
+
     protected override async Task OnInitializedAsync()
     {
         var sessions = await GymService.GetSessionsAsync();
         activeSession = sessions.FirstOrDefault(s => !s.EndTime.HasValue);
-
-        allExercises = await Http.GetFromJsonAsync<List<ExerciseTemplate>>("data/exercises.json") ?? new();
+        allExercises = await LoadAllExerciseTemplatesAsync();
 
         if (activeSession != null)
         {
             StartStopwatch();
-
-            filteredExercises = allExercises
-                .Where(e => activeSession.SessionType.HasFlag(e.SessionType))
-                .ToList();
         }
     }
-
 
     private async Task CreateNewSession()
     {
         var newSession = new GymSession
         {
             StartTime = DateTime.Now,
+            SessionType = selectedSessionType,
             Notes = newSessionNotes,
-            SessionType = selectedSessionType
+            Exercises = new List<GymExercise>()
         };
 
         await GymService.CreateSessionAsync(newSession);
-        CloseNewSessionDialog();
-
         activeSession = newSession;
+        showNewSessionDialog = false;
         StartStopwatch();
-        filteredExercises = allExercises
-            .Where(e => newSession.SessionType.HasFlag(e.SessionType))
-            .ToList();
+        StateHasChanged();
     }
+
+    private void OpenNewSessionDialog() => showNewSessionDialog = true;
+    private void CloseNewSessionDialog() => showNewSessionDialog = false;
+
+    private void OpenFinishSessionDialog(int id)
+    {
+        selectedSessionId = id;
+        finishSessionNotes = null;
+        showFinishSessionDialog = true;
+    }
+
+    private void OpenAddExerciseDialog() => showAddExerciseDialog = true;
+    private void CloseAddExerciseDialog() => showAddExerciseDialog = false;
 
     private void StartStopwatch()
     {
@@ -182,70 +255,31 @@ else
         stopwatchTimer = null;
     }
 
-    private void OpenNewSessionDialog()
+    private async Task<List<GymExerciseTemplate>> LoadAllExerciseTemplatesAsync()
     {
-        newSessionNotes = null;
-        selectedSessionType = GymSessionType.None;
-        showNewSessionDialog = true;
-    }
+        var categories = new[] { "arms", "back", "chest", "leg", "shoulders" };
+        var all = new List<GymExerciseTemplate>();
 
-    private void CloseNewSessionDialog()
-    {
-        showNewSessionDialog = false;
-    }
-
-    private void OpenFinishSessionDialog(int id)
-    {
-        selectedSessionId = id;
-        finishSessionNotes = null;
-        showFinishSessionDialog = true;
-    }
-
-    private void CloseFinishSessionDialog()
-    {
-        showFinishSessionDialog = false;
-    }
-
-    private async Task DiscardActiveSession()
-    {
-        if (activeSession != null)
+        foreach (var category in categories)
         {
-            var confirm = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to discard this session?");
-            if (confirm)
+            try
             {
-                await GymService.DeleteSessionAsync(activeSession.Id);
-                activeSession = null;
-                StopStopwatch();
+                var filePath = $"data/exercises.{category}.json";
+                var templates = await Http.GetFromJsonAsync<List<GymExerciseTemplate>>(filePath);
+                if (templates != null) all.AddRange(templates);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to load {category} exercises: {ex.Message}");
             }
         }
+
+        return all;
     }
 
-    
-    private int selectedSessionId;
-
-    private async Task FinishSession()
+    private async Task AddExerciseToSession(GymExerciseTemplate template)
     {
-        if (activeSession != null)
-        {
-            await GymService.FinishSessionAsync(activeSession.Id, DateTime.Now, finishSessionNotes);
-            activeSession = null;
-            StopStopwatch();
-            CloseFinishSessionDialog();
-        }
-    }
-
-    private string GetSessionTypeDisplay(GymSessionType types)
-    {
-        if (types == GymSessionType.None) return "-";
-        return string.Join(", ",
-            Enum.GetValues<GymSessionType>()
-                .Where(t => t != GymSessionType.None && types.HasFlag(t))
-                .Select(t => t.ToString()));
-    }
-    
-    private async Task AddExerciseToSession(ExerciseTemplate template)
-    {
-        if (activeSession != null)
+        if (activeSession != null && !activeSession.Exercises.Any(e => e.Name == template.Name))
         {
             var exercise = new GymExercise
             {
@@ -255,18 +289,51 @@ else
             };
 
             activeSession.Exercises.Add(exercise);
-            await GymService.UpdateSessionAsync(activeSession); // Ensure this method exists
+            await GymService.UpdateSessionAsync(activeSession);
             StateHasChanged();
         }
     }
-    
-    private void FilterExercises()
+
+    private async Task DiscardActiveSession()
     {
         if (activeSession != null)
         {
-            filteredExercises = allExercises
-                .Where(e => activeSession.SessionType.HasFlag(e.SessionType))
-                .ToList();
+            var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to discard this session?");
+            if (confirm)
+            {
+                await GymService.DeleteSessionAsync(activeSession.Id);
+                activeSession = null;
+                StopStopwatch();
+                StateHasChanged();
+            }
+        }
+    }
+
+    private string GetSessionTypeDisplay(GymSessionType types)
+    {
+        if (types == GymSessionType.None) return "-";
+        return string.Join(", ", Enum.GetValues<GymSessionType>().Where(t => t != GymSessionType.None && types.HasFlag(t)));
+    }
+    
+    private void CloseFinishSessionDialog() => showFinishSessionDialog = false;
+
+    private async Task FinishSession()
+    {
+        if (activeSession != null)
+        {
+            activeSession.EndTime = DateTime.Now;
+            if (!string.IsNullOrWhiteSpace(finishSessionNotes))
+            {
+                activeSession.Notes = string.IsNullOrWhiteSpace(activeSession.Notes)
+                    ? finishSessionNotes
+                    : $"{activeSession.Notes}\n\n{finishSessionNotes}";
+            }
+
+            await GymService.UpdateSessionAsync(activeSession);
+            StopStopwatch();
+            showFinishSessionDialog = false;
+            activeSession = null;
+            StateHasChanged();
         }
     }
 

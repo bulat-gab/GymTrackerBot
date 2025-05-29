@@ -1,0 +1,51 @@
+﻿[
+  {
+    "Id": "squat",
+    "Name": "Squat",
+    "SessionType": 1,
+    "DefaultSets": 3,
+    "DefaultReps": 10
+  },
+  {
+    "Id": "sumo_deadlift",
+    "Name": "Sumo Deadlift",
+    "SessionType": 1,
+    "DefaultSets": 3,
+    "DefaultReps": 8
+  },
+  {
+    "Id": "leg_press",
+    "Name": "Leg Press",
+    "SessionType": 1,
+    "DefaultSets": 4,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "lunges",
+    "Name": "Lunges",
+    "SessionType": 1,
+    "DefaultSets": 3,
+    "DefaultReps": 12
+  },
+  {
+    "Id": "hamstring_curls",
+    "Name": "Hamstring Curls",
+    "SessionType": 1,
+    "DefaultSets": 4,
+    "DefaultReps": 15
+  },
+  {
+    "Id": "quad_extension",
+    "Name": "Quad Extension",
+    "SessionType": 1,
+    "DefaultSets": 4,
+    "DefaultReps": 15
+  },
+  {
+    "Id": "calf_raises",
+    "Name": "Calf Raises",
+    "SessionType": 1,
+    "DefaultSets": 3,
+    "DefaultReps": 15
+  }
+]

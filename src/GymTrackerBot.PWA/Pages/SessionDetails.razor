@@ -168,6 +168,28 @@ else
                     </div>
                 </div>
             </div>
+            <div class="mt-4">
+                <h5>Exercises</h5>
+                @if (session.Exercises.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var ex in session.Exercises)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@ex.Name</strong><br />
+                                    <small>@ex.Sets sets × @ex.Reps reps</small>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="text-muted">No exercises were logged for this session.</div>
+                }
+            </div>
+
         </div>
     </div>
 }

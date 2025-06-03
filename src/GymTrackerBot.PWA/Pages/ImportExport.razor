@@ -1,16 +1,25 @@
 ﻿@page "/importexport"
 @using System.Text.Json
 @using GymTrackerBot.Domain.Interfaces
+@using GymTrackerBot.Domain.Models
 
 @inject IJSRuntime JSRuntime
 @inject IGymServiceStandalone GymService
 
 <h3>ImportExport</h3>
 
-<button class="btn btn-primary" @onclick="ExportSessions">Export sessions to a file</button>
-
+<div class="d-flex flex-column align-items-start gap-2">
+    <button class="btn btn-primary" @onclick="ExportSessions">Export sessions to a file</button>
+    <button class="btn btn-primary" @onclick="ImportSessions">Import from file</button>
+</div>
+<!-- Feedback Message (Visible if message is not empty) -->
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-info mt-3">@message</div>
+}
 
 @code {
+    private string message = ""; // Message to show in UI
 
     private async Task ExportSessions()
     {
@@ -20,4 +29,54 @@
         await JSRuntime.InvokeVoidAsync("downloadFile", "sessions.json", "application/json", json);
 
     }
+
+    private async Task ImportSessions()
+    {
+        try
+        {
+            // Check if local storage already contains sessions
+            var existingSessions = await GymService.GetSessionsAsync();
+            if (existingSessions != null && existingSessions.Any())
+            {
+                message = "Import canceled: Sessions already exist in storage.";
+                StateHasChanged(); // Refresh the UI to show the new state
+                return;
+            }
+
+            // Open file picker and read the content of the selected file
+            var fileContent = await JSRuntime.InvokeAsync<string>("importFile");
+
+            if (string.IsNullOrWhiteSpace(fileContent))
+            {
+                message = "No file selected or file is empty.";
+                StateHasChanged();
+                return;
+            }
+
+            // Parse the JSON into a list of GymSession objects
+            var sessions = JsonSerializer.Deserialize<List<GymSession>>(fileContent);
+
+            if (sessions == null || !sessions.Any())
+            {
+                message = "No valid sessions found in the imported file.";
+                StateHasChanged();
+                return;
+            }
+
+            // Save the parsed sessions to local storage
+            foreach (var session in sessions)
+            {
+                await GymService.CreateSessionAsync(session);
+            }
+
+            message = "Sessions successfully imported!";
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            message = $"An error occurred during import: {ex.Message}";
+            StateHasChanged();
+        }
+    }
+
 }

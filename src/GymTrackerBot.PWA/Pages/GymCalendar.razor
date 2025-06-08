@@ -1,0 +1,92 @@
+﻿@page "/calendar"
+@using GymTrackerBot.Domain.Interfaces
+@inject IGymServiceStandalone GymService
+
+<PageTitle>Calendar</PageTitle>
+
+<h3 class="mb-3">Gym Session Calendar</h3>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-secondary" @onclick="PreviousMonth">‹</button>
+    <h5 class="mb-0">@_currentMonth.ToString("MMMM yyyy")</h5>
+    <button class="btn btn-outline-secondary" @onclick="NextMonth">›</button>
+</div>
+
+<div class="calendar-grid">
+    @foreach (var dayName in DayNames)
+    {
+        <div class="calendar-header text-center fw-bold">@dayName</div>
+    }
+
+    @for (int i = 0; i < FirstDayOffset; i++)
+    {
+        <div class="calendar-cell empty"></div>
+    }
+
+    @for (int day = 1; day <= DaysInMonth(_currentMonth); day++)
+    {
+        var date = new DateTime(_currentMonth.Year, _currentMonth.Month, day);
+        var hasSession = _sessionDates.Contains(date.Date);
+        <div class="calendar-cell text-center @(hasSession ? "bg-success text-white" : "")">
+            @day
+        </div>
+    }
+</div>
+
+<style>
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+    }
+
+    .calendar-header {
+        padding: 6px 0;
+        background-color: #f8f9fa;
+    }
+
+    .calendar-cell {
+        padding: 10px 0;
+        border: 1px solid #dee2e6;
+        min-height: 50px;
+        border-radius: 4px;
+    }
+
+    .calendar-cell.empty {
+        border: none;
+        background-color: transparent;
+    }
+</style>
+
+@code {
+    private DateTime _currentMonth = DateTime.Today;
+    private HashSet<DateTime> _sessionDates = [];
+    private static readonly string[] DayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    private int FirstDayOffset => (int)new DateTime(_currentMonth.Year, _currentMonth.Month, 1).DayOfWeek;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSessions();
+    }
+
+    private async Task LoadSessions()
+    {
+        var sessions = await GymService.GetSessionsAsync();
+        _sessionDates = sessions
+            .Where(s => s.EndTime.HasValue)
+            .Select(s => s.StartTime.Date)
+            .ToHashSet();
+    }
+
+    private int DaysInMonth(DateTime month) => DateTime.DaysInMonth(month.Year, month.Month);
+
+    private void PreviousMonth()
+    {
+        _currentMonth = _currentMonth.AddMonths(-1);
+    }
+
+    private void NextMonth()
+    {
+        _currentMonth = _currentMonth.AddMonths(1);
+    }
+}

@@ -1,51 +1,43 @@
 ﻿@inject NavigationManager NavigationManager
 
-
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">House of Gains</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+<!-- Desktop Sidebar (visible on md and up) -->
+<div class="nav-sidebar d-none d-md-block">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="@GetBasePath()" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu"></span> Home
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="sessions">
-                <span class="oi oi-list" aria-hidden="true"></span> Gym Sessions
+                <span class="oi oi-list"></span> Gym Sessions
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="calendar">
-                <span class="oi oi-list" aria-hidden="true"></span>Calendar
+                <span class="oi oi-calendar"></span> Calendar
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="importexport">
-                <span class="oi oi-list" aria-hidden="true"></span> Import and Export
+                <span class="oi oi-data-transfer-download"></span> Import/Export
             </NavLink>
         </div>
     </nav>
 </div>
 
-@code {
-    private bool collapseNavMenu = true;
-    
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private object GetBasePath() => NavigationManager.BaseUri;
-    
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
-}
+<!-- Mobile Bottom Nav (visible on sm only) -->
+<div class="mobile-bottom-nav d-flex d-md-none justify-content-around align-items-center fixed-bottom bg-dark text-white py-2 border-top">
+    <NavLink class="text-white text-center" href="/" Match="NavLinkMatch.All">
+        <i class="bi bi-house-door-fill"></i><br />Home
+    </NavLink>
+    <NavLink class="text-white text-center" href="sessions">
+        <i class="oi oi-list"></i><br />Sessions
+    </NavLink>
+    <NavLink class="text-white text-center" href="calendar">
+        <i class="oi oi-calendar"></i><br />Calendar
+    </NavLink>
+    <NavLink class="text-white text-center" href="importexport">
+        <i class="oi oi-data-transfer-download"></i><br />Import
+    </NavLink>
+</div>

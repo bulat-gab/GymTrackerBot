@@ -1,10 +1,12 @@
 ﻿@inherits LayoutComponentBase
+
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
+    <!-- Desktop Sidebar -->
+    <div class="sidebar d-none d-md-block">
+        <NavMenu />
     </div>
 
-    <main>
+    <main class="main-content pb-5"> <!-- Add padding for fixed mobile nav -->
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
@@ -13,4 +15,9 @@
             @Body
         </article>
     </main>
+
+    <!-- Mobile Bottom Nav (rendered via NavMenu) -->
+    <div class="d-md-none">
+        <NavMenu />
+    </div>
 </div>

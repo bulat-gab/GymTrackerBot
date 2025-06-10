@@ -139,3 +139,13 @@ code {
 .modal.show {
     z-index: 1050;
 }
+
+.mobile-bottom-nav {
+    height: 60px;
+    z-index: 1030;
+    font-size: 0.85rem;
+}
+
+.mobile-bottom-nav .nav-link {
+    flex: 1;
+}

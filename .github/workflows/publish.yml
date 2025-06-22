@@ -51,12 +51,12 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=%s)
           DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          mkdir -p GymTrackerBot/wwwroot
+          mkdir -p ${{ env.PUBLISH_DIR }}
           echo "{
             \"commitHash\": \"${COMMIT_HASH}\",
             \"commitMessage\": \"${COMMIT_MESSAGE}\",
             \"date\": \"${DATE}\"
-          }" > GymTrackerBot/wwwroot/buildinfo.json
+          }" > ${{ env.PUBLISH_DIR }}/buildinfo.json
         shell: bash
 
       - name: Publish app

@@ -33,24 +33,19 @@
 </div>
 
 <!-- Mobile Bottom Nav (visible on sm only) -->
-<div class="mobile-bottom-nav d-flex d-md-none justify-content-around align-items-center fixed-bottom bg-dark text-white py-2 border-top"
-     style="padding-bottom: env(safe-area-inset-bottom, 1rem);">
-
-    <NavLink class="text-white text-center" href="@NavigationManager.BaseUri"
-             Match="NavLinkMatch.All">
+<div class="mobile-bottom-nav d-flex d-md-none justify-content-around align-items-center fixed-bottom bg-dark text-white py-2 border-top shadow">
+    <NavLink class="text-white text-center" href="@NavigationManager.BaseUri" Match="NavLinkMatch.All">
         <div class="d-flex flex-column align-items-center">
             <i class="bi bi-house-door-fill mb-1" style="font-size: 1.5rem;"></i>
             <small>Home</small>
         </div>
     </NavLink>
-
     <NavLink class="text-white text-center" href="sessions">
         <div class="d-flex flex-column align-items-center">
             <i class="bi bi-journal-text mb-1" style="font-size: 1.5rem;"></i>
             <small>Sessions</small>
         </div>
     </NavLink>
-
     <NavLink class="text-white text-center" href="calendar">
         <div class="d-flex flex-column align-items-center">
             <i class="bi bi-calendar3 mb-1" style="font-size: 1.5rem;"></i>

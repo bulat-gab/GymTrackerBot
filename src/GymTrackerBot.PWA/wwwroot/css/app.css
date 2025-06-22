@@ -141,10 +141,11 @@ code {
 }
 
 .mobile-bottom-nav {
-    height: 60px;
+    padding-bottom: calc(env(safe-area-inset-bottom, 1rem) + 0.75rem);
+    margin-bottom: 0.5rem;
     z-index: 1030;
-    font-size: 0.85rem;
 }
+
 
 .mobile-bottom-nav .nav-link {
     flex: 1;

@@ -45,6 +45,20 @@ jobs:
         with:
           dotnet-version: '9.0'
 
+      - name: Generate buildinfo.json
+        run: |
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          COMMIT_MESSAGE=$(git log -1 --pretty=%s)
+          DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          mkdir -p GymTrackerBot/wwwroot
+          echo "{
+            \"commitHash\": \"${COMMIT_HASH}\",
+            \"commitMessage\": \"${COMMIT_MESSAGE}\",
+            \"date\": \"${DATE}\"
+          }" > GymTrackerBot/wwwroot/buildinfo.json
+        shell: bash
+
       - name: Publish app
         run: dotnet publish src/GymTrackerBot.PWA -c Release
 

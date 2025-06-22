@@ -27,7 +27,9 @@
     {
         var date = new DateTime(_currentMonth.Year, _currentMonth.Month, day);
         var hasSession = _sessionDates.Contains(date.Date);
-        <div class="calendar-cell text-center @(hasSession ? "bg-success text-white" : "")">
+        var isToday = date.Date == DateTime.Today;
+        
+        <div class="calendar-cell text-center @(hasSession ? "bg-success text-white" : isToday ? "border border-primary" : "")">
             @day
         </div>
     }
@@ -62,7 +64,8 @@
     private DateTime _currentMonth = DateTime.Today;
     private HashSet<DateTime> _sessionDates = [];
     private static readonly string[] DayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    private int FirstDayOffset => (int)new DateTime(_currentMonth.Year, _currentMonth.Month, 1).DayOfWeek;
+    private int FirstDayOffset => ((int)new DateTime(_currentMonth.Year, _currentMonth.Month, 1).DayOfWeek + 6) % 7;
+
 
     protected override async Task OnInitializedAsync()
     {

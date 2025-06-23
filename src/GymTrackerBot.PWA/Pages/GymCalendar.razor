@@ -1,6 +1,7 @@
 ﻿@page "/calendar"
 @using GymTrackerBot.Domain.Interfaces
 @inject IGymServiceStandalone GymService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Calendar</PageTitle>
 
@@ -26,11 +27,12 @@
     @for (int day = 1; day <= DaysInMonth(_currentMonth); day++)
     {
         var date = new DateTime(_currentMonth.Year, _currentMonth.Month, day);
-        var hasSession = _sessionDates.Contains(date.Date);
+        var hasSession = _sessionDatesMap.ContainsKey(date.Date);
         var isToday = date.Date == DateTime.Today;
         
-        <div class="calendar-cell text-center @(hasSession ? "bg-success text-white" : isToday ? "border border-primary" : "")">
-            @day
+        <div class="calendar-cell text-center @(hasSession ? "bg-success text-white" : isToday ? "border border-primary" : "")"
+             @onclick="GetClickHandler(date)">
+            @date.Day
         </div>
     }
 </div>
@@ -62,9 +64,11 @@
 
 @code {
     private DateTime _currentMonth = DateTime.Today;
-    private HashSet<DateTime> _sessionDates = [];
+    // private HashSet<DateTime> _sessionDates = [];
     private static readonly string[] DayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     private int FirstDayOffset => ((int)new DateTime(_currentMonth.Year, _currentMonth.Month, 1).DayOfWeek + 6) % 7;
+    
+    private Dictionary<DateTime, int> _sessionDatesMap = new(); // Dictionary to hold Date and Latest Session ID.
 
 
     protected override async Task OnInitializedAsync()
@@ -75,10 +79,18 @@
     private async Task LoadSessions()
     {
         var sessions = await GymService.GetSessionsAsync();
-        _sessionDates = sessions
+        // _sessionDates = sessions
+        //     .Where(s => s.EndTime.HasValue)
+        //     .Select(s => s.StartTime.Date)
+        //     .ToHashSet();
+
+        _sessionDatesMap = sessions
             .Where(s => s.EndTime.HasValue)
-            .Select(s => s.StartTime.Date)
-            .ToHashSet();
+            .GroupBy(s => s.StartTime.Date)
+            .ToDictionary(
+                group => group.Key,
+                group => group.OrderByDescending(s => s.EndTime).First().Id
+            );
     }
 
     private int DaysInMonth(DateTime month) => DateTime.DaysInMonth(month.Year, month.Month);
@@ -92,4 +104,24 @@
     {
         _currentMonth = _currentMonth.AddMonths(1);
     }
+    
+    private void NavigateToLatestSession(DateTime date)
+    {
+        if (_sessionDatesMap.TryGetValue(date, out var latestSessionId))
+        {
+            NavigationManager.NavigateTo($"sessions/{latestSessionId}");
+        }
+    }
+    
+    private EventCallback GetClickHandler(DateTime date)
+    {
+        bool hasSession = _sessionDatesMap.ContainsKey(date.Date);
+        if (hasSession)
+        {
+            return EventCallback.Factory.Create(this, () => NavigateToLatestSession(date));
+        }
+
+        return default;
+    }
+
 }
